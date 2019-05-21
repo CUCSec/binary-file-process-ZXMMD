@@ -1,21 +1,18 @@
 import struct
 
 
-def tamper(student_id):#以下几行代码可以单独运行修改像素，但放在此处便不能成功运行
-  student_id=[2,0,1,8,1,1,1,2,3,0,1,5]
-  
+def tamper(student_id):
   with open("lenna.bmp","r+b") as f:
-    n=54+student_id[0]*3
-    f.seek(n)
-    f.write(b"\x00\x00\x00") 
-    for i in range(1,12):
-        if student_id[i]==0:
-            m=10*3+3
-        else:
-            m=student_id[i]*3+3
-        n=n+m
-        f.seek(n)
-        f.write(b"\x00\x00\x00")
+    n=54
+    for i in student_id:
+      i = int(i)
+      if i==0:
+        m=10*3
+      else:
+        m=i*3
+      n=n+m
+      f.seek(n)
+      f.write(b"\x00\x00\x00")
 
 def detect():
   with open('lenna.bmp', 'rb') as f:
